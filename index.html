@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Anit Fadia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+  :root{
+    --bg: #07090a;
+    --ink: #e9ece9;
+    --ink-dim: #8d968f;
+    --line: rgba(255,253,116,0.14);
+    --mint: #FFFD74;
+    --mint-dim: #999846;
+    --sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; text-decoration: none; }
+  ::selection{ background: var(--mint-dim); color: var(--ink); }
+
+  .wrap{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 6vw;
+  }
+
+  /* ---------- nav ---------- */
+  nav{
+    padding: 2.4rem 0 0;
+  }
+  nav .wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand{
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+  color: #d4af37;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+  
+  .brand:hover{ color: var(--mint); }
+  .brand .dot{ color: var(--mint); }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    padding: 5.5rem 0 5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .status-line{
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--mint-dim);
+    margin: 0 0 1.6rem;
+  }
+  .status-line .pulse{
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--mint);
+    margin-right: 0.6em;
+    transform: translateY(-1px);
+  }
+  h1{
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.2;
+    margin: 0 0 1.6rem;
+    max-width: 16ch;
+    color: var(--ink);
+  }
+  .bio{
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--ink-dim);
+    max-width: 58ch;
+    margin: 0 0 1.1rem;
+  }
+  .bio a{
+    color: var(--ink);
+    border-bottom: 1px solid var(--mint-dim);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .bio a:hover{
+    color: var(--mint);
+    border-bottom-color: var(--mint);
+  }
+
+  .socials{
+    margin-top: 2.2rem;
+    display: flex;
+    gap: 1.6rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+  }
+  .socials a{
+    color: var(--ink-dim);
+    position: relative;
+    padding-bottom: 2px;
+  }
+  .socials a::after{
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: var(--mint);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+  .socials a:hover{ color: var(--ink); }
+  .socials a:hover::after{ transform: scaleX(1); }
+
+  /* ---------- projects ---------- */
+  section.work{
+    padding: 5rem 0 6rem;
+  }
+  .section-label{
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    margin: 0 0 0.6rem;
+  }
+  h2.section-title{
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 1.7rem;
+    margin: 0 0 3rem;
+    color: var(--ink);
+  }
+
+  .project{
+    padding: 2.6rem 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 2rem;
+  }
+  .project:first-of-type{ border-top: none; padding-top: 0; }
+
+  .project-meta{
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .project-cat{
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--mint);
+    letter-spacing: 0.02em;
+  }
+  .project-status{
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--ink-dim);
+    border: 1px solid var(--line);
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    width: fit-content;
+  }
+
+  .project-body h3{
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 1.25rem;
+    margin: 0 0 0.7rem;
+    color: var(--ink);
+    display: inline-block;
+    position: relative;
+    padding-bottom: 3px;
+    cursor: default;
+    transition: color 0.2s ease;
+  }
+  .project-body h3::after{
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: var(--mint);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+  .project-body h3:hover{ color: var(--mint); }
+  .project-body h3:hover::after{ transform: scaleX(1); }
+
+  .project-body p{
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-dim);
+    margin: 0 0 1rem;
+    max-width: 52ch;
+  }
+
+  .tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .tags span{
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--ink-dim);
+    border: 1px solid var(--line);
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+  }
+
+  .project-link{
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--mint);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .project-link svg{ width: 12px; height: 12px; }
+
+  @media (max-width: 600px){
+    .project{ grid-template-columns: 1fr; gap: 1rem; }
+    .project-meta{ flex-direction: row; align-items: center; }
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    padding: 2.5rem 0 3rem;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  footer .socials{
+    justify-content: center;
+    margin: 0 0 1.4rem;
+  }
+  footer .copyright{
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-dim);
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">anitfadia.</a>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+  <header class="hero" id="about">
+    <p class="status-line"><span class="pulse"></span>mumbai, india.</p>
+    <h1>Exploring markets from first principles.</h1>
+    <p class="bio">Currently building Vezory, an early-stage algorithmic trading practice — while learning quantitative finance and machine learning from the ground up, one strategy and one backtest at a time.</p>
+    <p class="bio">Outside of code, you'll usually find me watching or playing cricket — it's probably the other thing I think about as much as whatever I'm currently building.</p>
+  </header>
+
+  <section class="work" id="work">
+    <h2 class="section-title">Projects</h2>
+
+    <div class="project">
+      <div class="project-meta">
+        <span class="project-cat">Quant / Fintech</span>
+        <span class="project-status">In progress</span>
+      </div>
+      <div class="project-body">
+        <h3>Vezory</h3>
+        <p>An early-stage algorithmic trading practice, built from the ground up — currently in the research and infrastructure phase, with the long-term goal of running registered algorithmic strategies on behalf of others.</p>
+        <div class="tags">
+          <span>Python</span>
+          <span>Algorithmic Trading</span>
+          <span>Web</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-meta">
+        <span class="project-cat">GIS / Mapping</span>
+        <span class="project-status">Built</span>
+      </div>
+      <div class="project-body">
+        <h3>3D ULPIN Maker</h3>
+        <p>This project extends the government's existing ULPIN scheme (a 14-character ID tied to a parcel's lat/long) into a 3D volumetric ID — appending a structure, floor, unit, and elevation range (Z-range) to the same base code. The Z-range is the key idea: it's what lets the system represent things that have no floor number at all, like air-rights or an elevated metro corridor, and lets it automatically detect when two owners claim overlapping 3D space.</p>
+        <div class="tags">
+          <span>Python</span>
+          <span>GIS</span>
+          <span>3D Visualization</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-meta">
+        <span class="project-cat">Biomechanics</span>
+        <span class="project-status">Built</span>
+      </div>
+      <div class="project-body">
+        <h3>Mantis Shrimp Biomechanics Model</h3>
+        <p>A computational model exploring the strike mechanics of the mantis shrimp's dactyl club, built to understand one of the fastest accelerations in the animal kingdom from first principles.</p>
+        <div class="tags">
+          <span>Python</span>
+          <span>Physics</span>
+          <span>Modeling</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-meta">
+        <span class="project-cat">Web / Social</span>
+        <span class="project-status">Built</span>
+      </div>
+      <div class="project-body">
+        <h3>Plexus</h3>
+        <p>A website built to help first-year students find like-minded peers — an icebreaker that matches users based on their own stated interests and hobbies, rather than leaving students to find their people by chance. It also incorporated an AI chatbot named Dexter, and ran souly on Google API.</p>
+        <div class="tags">
+          <span>Web</span>
+          <span>Matching</span>
+          <span>Social</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    <div class="socials">
+      <a href="https://github.com/anitfadia" target="_blank" rel="noopener">github</a>
+      <a href="https://www.linkedin.com/in/anitfadia/" target="_blank" rel="noopener">linkedin</a>
+      <a href="https://www.instagram.com/anitfadia/" target="_blank" rel="noopener">instagram</a>
+      <a href="https://x.com/anitfadia" target="_blank" rel="noopener">x</a>
+    </div>
+    <p class="copyright">© 2026 Anit Fadia</p>
+  </footer>
+</div>
+
+</body>
+</html>
