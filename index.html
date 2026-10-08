@@ -231,7 +231,8 @@
     align-items: center;
     gap: 0.35rem;
   }
-  .project-link svg{ width: 12px; height: 12px; }
+ .project-link svg{ width: 12px; height: 12px; transition: transform 0.2s ease; }
+ .project-link:hover svg{ transform: translate(2px, -2px); }
 
   @media (max-width: 600px){
     .project{ grid-template-columns: 1fr; gap: 1rem; }
