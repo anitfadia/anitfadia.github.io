@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Anit Fadia</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
@@ -14,6 +16,8 @@
     --line: rgba(255,253,116,0.14);
     --mint: #FFFD74;
     --mint-dim: #999846;
+    --blue: #5aa9ff;
+    --blue-hover: #8cc4ff;
     --sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   }
@@ -46,14 +50,14 @@
     align-items: center;
   }
   .brand{
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.3rem;
-  letter-spacing: 0.01em;
-  color: #d4af37;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-  
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.01em;
+    color: #d4af37;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
   .brand:hover{ color: var(--mint); }
   .brand .dot{ color: var(--mint); }
 
@@ -226,17 +230,25 @@
   .project-link{
     font-family: var(--mono);
     font-size: 0.78rem;
-    color: var(--mint);
+    color: var(--blue);
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+    transition: color 0.2s ease;
   }
- .project-link svg{ width: 12px; height: 12px; transition: transform 0.2s ease; }
-.project-link:hover svg{ transform: translate(2px, -2px); }
+  .project-link:hover{ color: var(--blue-hover); }
+  /* sits in the left column, below the status badge, centred in the free space beneath it */
+  .project-meta .project-link{
+    align-self: flex-start;
+    margin: auto 0;
+  }
+  .project-link svg{ width: 12px; height: 12px; transition: transform 0.2s ease; }
+  .project-link:hover svg{ transform: translate(2px, -2px); }
 
   @media (max-width: 600px){
     .project{ grid-template-columns: 1fr; gap: 1rem; }
-    .project-meta{ flex-direction: row; align-items: center; }
+    .project-meta{ flex-direction: row; align-items: center; flex-wrap: wrap; }
+    .project-meta .project-link{ margin: 0; }
   }
 
   /* ---------- footer ---------- */
@@ -296,19 +308,18 @@
       <div class="project-meta">
         <span class="project-cat">GIS / Mapping</span>
         <span class="project-status">Built</span>
+        <a class="project-link" href="https://anitfadia.github.io/3D-ULPIN/" target="_blank" rel="noopener">
+          Visit
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
       </div>
       <div class="project-body">
         <h3>3D ULPIN Maker</h3>
         <p>This project extends the government's existing ULPIN scheme (a 14-character ID tied to a parcel's lat/long) into a 3D volumetric ID — appending a structure, floor, unit, and elevation range (Z-range) to the same base code. The Z-range is the key idea: it's what lets the system represent things that have no floor number at all, like air-rights or an elevated metro corridor, and lets it automatically detect when two owners claim overlapping 3D space.</p>
-       <div class="tags">
-         <span>Python</span>
-         <span>GIS</span>
-         <span>3D Visualization</span>
-       </div>   <!-- tags closes here -->
-        <a class="project-link" href="https://anitfadia.github.io/3D-ULPIN/" target="_blank" rel="noopener">
-          View
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-        </a>
+        <div class="tags">
+          <span>Python</span>
+          <span>GIS</span>
+          <span>3D Visualization</span>
         </div>
       </div>
     </div>
@@ -317,6 +328,10 @@
       <div class="project-meta">
         <span class="project-cat">Biomechanics</span>
         <span class="project-status">Built</span>
+        <a class="project-link" href="https://mantis-shrimp-project.vercel.app/" target="_blank" rel="noopener">
+          Visit
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
       </div>
       <div class="project-body">
         <h3>Mantis Shrimp Biomechanics Model</h3>
