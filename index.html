@@ -40,6 +40,17 @@
     padding: 0 6vw;
   }
 
+  /* ---------- retro snake backdrop ---------- */
+  .bg-snake{
+    position: fixed;
+    top: 0; left: 0;
+    z-index: -1;
+    pointer-events: none;
+    image-rendering: pixelated;
+    opacity: 0.5;
+  }
+  .wrap{ text-shadow: 0 0 10px rgba(0,0,0,0.9); }   /* soft dark halo keeps text readable over the snake */
+
   /* ---------- nav ---------- */
   nav{
     padding: 2.4rem 0 0;
@@ -272,6 +283,8 @@
 </head>
 <body>
 
+<canvas class="bg-snake" id="snake" aria-hidden="true"></canvas>
+
 <nav>
   <div class="wrap">
     <a class="brand" href="#top">anit fadia.</a>
@@ -440,6 +453,105 @@
     <p class="copyright">© 2026 Anit Fadia</p>
   </footer>
 </div>
+
+<script>
+/* Self-playing retro snake: no input, it just plays itself forever behind the page. */
+(function(){
+  const cv = document.getElementById('snake'), cx = cv.getContext('2d');
+  const C = 14;            // cell size in px (the pixel chunkiness)
+  const STEP = 60;         // ms per move: lower = faster snake
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const PAL = { r:'#e03a3a', w:'#ff9a9a', g:'#44d62c', s:'#8a5a2b' };
+  const APPLE = ['....gg.','...s...','.rrrrr.','rrwrrrr','rrwrrrr','rrrrrrr','.rrrrr.'];
+  const DIRS = [[1,0],[-1,0],[0,1],[0,-1]];
+  let W, H, snake, apples, maxLen, nApples, acc = 0, last = 0, timer;
+  const rnd = n => Math.random() * n | 0;
+
+  function setup(){
+    W = Math.max(8, Math.floor(innerWidth / C)); H = Math.max(8, Math.floor(innerHeight / C));
+    cv.width = W * C; cv.height = H * C;
+    nApples = Math.min(10, Math.max(4, Math.round(W * H / 700)));   // more apples on bigger screens
+    maxLen  = Math.min(48, Math.max(14, Math.floor(W * H / 60)));   // capped so it can loop forever
+    apples = []; respawn();
+    if (reduce) { for (let i = 0; i < 90; i++) step(); draw(); }
+  }
+  function respawn(){
+    const x = 3 + rnd(W - 6), y = 2 + rnd(H - 4);
+    snake = [[x,y],[x-1,y],[x-2,y],[x-3,y]];
+    apples = apples.filter(a => !snake.some(s => s[0]===a[0] && s[1]===a[1]));
+    while (apples.length < nApples) addApple();
+  }
+  function addApple(){
+    for (let t = 0; t < 80; t++) {
+      const x = rnd(W), y = rnd(H);
+      if (!snake.some(s => s[0]===x && s[1]===y) && !apples.some(a => a[0]===x && a[1]===y)) { apples.push([x,y]); return; }
+    }
+  }
+  function bfs(sx, sy, blocked, goal){            // shortest path; returns the first move to take
+    const n = W * H, first = new Int8Array(n).fill(-1), seen = new Uint8Array(n), q = new Int32Array(n);
+    const order = [0,1,2,3].sort(() => Math.random() - .5);     // random tie-breaks make the paths wander
+    let qh = 0, qt = 0; const s = sy * W + sx; seen[s] = 1; q[qt++] = s;
+    while (qh < qt) {
+      const c = q[qh++], x = c % W, y = (c / W) | 0;
+      for (const d of order) {
+        const nx = x + DIRS[d][0], ny = y + DIRS[d][1];
+        if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+        const k = ny * W + nx;
+        if (seen[k] || blocked[k]) continue;
+        seen[k] = 1; first[k] = c === s ? d : first[c];
+        if (goal(k)) return DIRS[first[k]];
+        q[qt++] = k;
+      }
+    }
+    return null;
+  }
+  function step(){
+    const [hx, hy] = snake[0], tail = snake[snake.length - 1];
+    const blocked = new Uint8Array(W * H), isApple = new Uint8Array(W * H);
+    for (let i = 0; i < snake.length - 1; i++) blocked[snake[i][1] * W + snake[i][0]] = 1;
+    apples.forEach(a => isApple[a[1] * W + a[0]] = 1);
+    let move = bfs(hx, hy, blocked, k => isApple[k]);                         // 1) nearest apple
+    if (!move) move = bfs(hx, hy, blocked, k => k === tail[1] * W + tail[0]); // 2) no route: chase own tail
+    if (!move) {                                                              // 3) any safe square, else start over
+      move = DIRS.find(([dx,dy]) => { const x = hx+dx, y = hy+dy; return x>=0 && y>=0 && x<W && y<H && !blocked[y*W+x]; });
+      if (!move) { respawn(); return; }
+    }
+    const nx = hx + move[0], ny = hy + move[1];
+    snake.unshift([nx, ny]);
+    const ai = apples.findIndex(a => a[0] === nx && a[1] === ny);
+    if (ai > -1) { apples.splice(ai, 1); addApple(); if (snake.length > maxLen) snake.pop(); }
+    else snake.pop();
+  }
+  function draw(){
+    cx.clearRect(0, 0, cv.width, cv.height);
+    const P = C / 7;
+    for (const [x, y] of apples)
+      for (let j = 0; j < 7; j++) for (let i = 0; i < 7; i++) {
+        const k = APPLE[j][i]; if (k === '.') continue;
+        cx.fillStyle = PAL[k]; cx.fillRect(x * C + i * P, y * C + j * P, P, P);
+      }
+    snake.forEach(([x, y], i) => {
+      cx.fillStyle = i === 0 ? '#7dff8a' : (i % 2 ? '#1fae37' : '#27c93f');
+      cx.fillRect(x * C + 1, y * C + 1, C - 2, C - 2);
+    });
+    const [hx, hy] = snake[0], dx = hx - snake[1][0], dy = hy - snake[1][1];
+    cx.fillStyle = '#07090a';
+    if (dx) { const ex = hx * C + (dx > 0 ? 9 : 3); cx.fillRect(ex, hy * C + 3, 2, 2); cx.fillRect(ex, hy * C + 9, 2, 2); }
+    else    { const ey = hy * C + (dy > 0 ? 9 : 3); cx.fillRect(hx * C + 3, ey, 2, 2); cx.fillRect(hx * C + 9, ey, 2, 2); }
+  }
+  function loop(t){
+    requestAnimationFrame(loop);
+    acc += Math.min(100, t - last); last = t;
+    let moved = false;
+    while (acc >= STEP) { acc -= STEP; step(); moved = true; }
+    if (moved) draw();
+  }
+
+  setup(); draw();
+  if (!reduce) requestAnimationFrame(loop);
+  addEventListener('resize', () => { clearTimeout(timer); timer = setTimeout(() => { setup(); draw(); }, 250); });
+})();
+</script>
 
 </body>
 </html>
