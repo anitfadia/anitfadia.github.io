@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&display=swap" rel="stylesheet"><style>
   :root{
     --bg: #07090a;
     --ink: #e9ece9;
@@ -18,6 +18,8 @@
     --mint-dim: #155e1f;
     --blue: #5aa9ff;
     --blue-hover: #8cc4ff;
+    --neon: #39ff14;
+    --pixel: 'Press Start 2P', ui-monospace, monospace;
     --sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   }
@@ -61,10 +63,10 @@
     align-items: center;
   }
   .brand{
-    font-family: var(--mono);
-    font-size: 1.15rem;
-    letter-spacing: 0.02em;
-    color: #39ff14;
+    font-family: var(--pixel);
+    font-size: 0.8rem;
+    letter-spacing: 0;
+    color: var(--neon);
     text-shadow: 0 0 10px rgba(57,255,20,0.45);
     cursor: pointer;
     transition: color 0.2s ease, text-shadow 0.2s ease;
@@ -154,21 +156,64 @@
     margin: 0 0 0.6rem;
   }
   h2.section-title{
-    font-family: var(--sans);
-    font-weight: 500;
-    font-size: 1.7rem;
+    font-family: var(--pixel);
+    font-weight: 400;
+    font-size: 1.15rem;
     margin: 0 0 3rem;
-    color: var(--ink);
+    color: var(--neon);
+    text-shadow: 0 0 10px rgba(57,255,20,0.45);
+  }
+  .px{   /* pixel-font word inside a heading, e.g. 'faster' */
+    font-family: var(--pixel);
+    font-weight: 400;
+    font-size: 0.6em;
+    letter-spacing: 0;
+    color: var(--neon);
+    text-shadow: 0 0 10px rgba(57,255,20,0.45);
   }
 
+  /* cartridge card: notched top, grip ridges, label sticker, gold contacts */
   .project{
-    padding: 2.6rem 0;
-    border-top: 1px solid var(--line);
+    --n: 18px;                 /* size of the cut top corners */
+    --acc: #39ff14;            /* label colour, changes per cartridge below */
+    --edge: #3b443d;
+    --body: #161b18;
+    position: relative;
+    isolation: isolate;
     display: grid;
     grid-template-columns: 140px 1fr;
     gap: 2rem;
+    padding: 58px 34px 50px;
+    margin-bottom: 2.6rem;
+    filter: drop-shadow(5px 5px 0 rgba(0,0,0,0.75));
   }
-  .project:first-of-type{ border-top: none; padding-top: 0; }
+  .project:nth-of-type(7n+2){ --acc: #FFFD74; }
+  .project:nth-of-type(7n+3){ --acc: #5aa9ff; }
+  .project:nth-of-type(7n+4){ --acc: #ff6fb5; }
+  .project:nth-of-type(7n+5){ --acc: #ff9f43; }
+  .project:nth-of-type(7n+6){ --acc: #6fe7c4; }
+  .project:nth-of-type(7n+7){ --acc: #b79cff; }
+  .project::before{            /* outline of the shell */
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: var(--edge);
+    clip-path: polygon(var(--n) 0, calc(100% - var(--n)) 0, 100% var(--n), 100% 100%, 0 100%, 0 var(--n));
+  }
+  .project::after{             /* plastic body, label, grip ridges, gold contacts */
+    content: "";
+    position: absolute;
+    inset: 3px;
+    z-index: -1;
+    clip-path: polygon(calc(var(--n) - 2px) 0, calc(100% - var(--n) + 2px) 0, 100% calc(var(--n) - 2px), 100% 100%, 0 100%, 0 calc(var(--n) - 2px));
+    background:
+      linear-gradient(#0a0e0b, #0a0e0b) 50% 38px / calc(100% - 32px) calc(100% - 72px) no-repeat,
+      linear-gradient(var(--acc), var(--acc)) 50% 35px / calc(100% - 26px) calc(100% - 66px) no-repeat,
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 3px, transparent 3px 9px) 0 0 / 100% 24px no-repeat,
+      repeating-linear-gradient(90deg, #c9a227 0 6px, transparent 6px 11px) center bottom 8px / calc(100% - 70px) 12px no-repeat,
+      var(--body);
+  }
 
   .project-meta{
     display: flex;
@@ -178,7 +223,7 @@
   .project-cat{
     font-family: var(--mono);
     font-size: 0.72rem;
-    color: var(--mint);
+    color: var(--acc);
     letter-spacing: 0.02em;
   }
   .project-status{
@@ -258,7 +303,7 @@
   .project-link:hover svg{ transform: translate(2px, -2px); }
 
   @media (max-width: 600px){
-    .project{ grid-template-columns: 1fr; gap: 1rem; }
+    .project{ grid-template-columns: 1fr; gap: 1rem; padding-left: 30px; padding-right: 30px; --n: 14px; }
     .project-meta{ flex-direction: row; align-items: center; flex-wrap: wrap; }
     .project-meta .project-link{ margin: 0; }
   }
@@ -294,7 +339,7 @@
 <div class="wrap" id="top">
   <header class="hero" id="about">
     <p class="status-line"><span class="pulse"></span>mumbai, india.</p>
-    <h1>Learning fast, Trading faster.</h1>
+    <h1>Learning fast, Trading <span class="px">faster</span>.</h1>
     <p class="bio">Currently building Vezory, an early-stage algorithmic trading practice — while learning quantitative finance and machine learning from the ground up, one strategy and one backtest at a time.</p>
     <p class="bio">Outside of code, you'll usually find me watching or playing cricket — it's probably the other thing I think about as much as whatever I'm currently building.</p>
   </header>
